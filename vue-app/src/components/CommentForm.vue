@@ -23,14 +23,14 @@ function hideDialog() {
 }
 
 async function send() {
+  isBtnDisabled.value = true
+  const data = {
+    author: name.value,
+    text: comment.value,
+    reaction: reaction.value,
+    parentId: props.parentId
+  }
   try {
-    isBtnDisabled.value = true
-    let data = {
-      author: name.value,
-      text: comment.value,
-      reaction: reaction.value,
-      parentId: props.parentId
-    }
     await fetch('http://slavaver.space/comments', {
       headers: {
         'Content-Type': 'application/json',
@@ -71,16 +71,19 @@ async function send() {
       </div>
       <form>
         <label class="form__label">
-          <p>Name</p>
-          <input type="text" name="name" v-model="name" />
+          <span class="visually-hidden">Enter your</span>
+          <span>Name</span>
+          <input type="text" name="name" v-model="name" class="form__input" />
         </label>
         <label class="form__label">
-          <p>Comment</p>
+          <span class="visually-hidden">Enter your</span>
+          <span>Comment</span>
           <textarea name="comment" class="form__textarea" rows="10" v-model="comment"></textarea>
         </label>
         <div class="form__lower">
           <fieldset>
             <label>
+              <span class="visually-hidden">Choose your reaction</span>
               <input
                 class="form__radio visually-hidden"
                 id="negative"
@@ -173,6 +176,14 @@ async function send() {
   }
   &__textarea {
     width: 100%;
+    resize: none;
+    border-radius: 0.3em;
+    border-style: none;
+  }
+  &__input {
+    display: block;
+    border-radius: 0.3em;
+    border-style: none;
   }
   &__tab,
   &__lower {
@@ -187,7 +198,7 @@ async function send() {
     &:checked + svg {
       color: #5dff7d;
     }
-    &:focus + svg {
+    &:focus-visible + svg {
       outline: 1px solid white;
     }
   }

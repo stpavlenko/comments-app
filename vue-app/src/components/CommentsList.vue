@@ -1,20 +1,24 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import CommentItem from './CommentItem.vue'
 
 const comments = ref([])
 const url = 'http://194.67.93.117:80'
+const eventSource = ref(null)
 
-const sortedCommentsTree = computed(() => {
-  let a = sortTree(arrayToTree(comments.value), props.selectedOption)
-  return a
-})
+const sortedCommentsTree = computed(() =>
+  sortTree(arrayToTree(comments.value), props.selectedOption)
+)
 
 const emit = defineEmits(['reply'])
 
 const props = defineProps({
   selectedOption: {
     type: String,
+    required: true
+  },
+  isSubscribed: {
+    type: Boolean,
     required: true
   }
 })
@@ -45,26 +49,46 @@ function sortTree(tree, option) {
     }))
 }
 
+function handleMessage(event) {
+  const comment = JSON.parse(event.data)
+  if (!comment.parentId) {
+    comment.parentId = null
+  }
+  comments.value.push(comment)
+}
+
 function subscribeComments() {
-  const eventSource = new EventSource(`${url}/comments/stream`)
-  eventSource.addEventListener('message', (event) => {
-    const comment = JSON.parse(event.data)
-    if (!comment.parentId) {
-      comment.parentId = null
-    }
-    comments.value.push(comment)
-  })
+  eventSource.value = new EventSource(`${url}/comments/stream`)
+  eventSource.value.addEventListener('message', handleMessage)
+}
+
+function unsubscribeComments() {
+  eventSource.value.close()
+  eventSource.value.removeEventListener('message', handleMessage)
 }
 
 async function getComments() {
   try {
     let response = await fetch(`${url}/comments`)
     comments.value = await response.json()
-    subscribeComments()
+    if (props.isSubscribed) {
+      subscribeComments()
+    }
   } catch (err) {
     console.log('Error')
   }
 }
+
+watch(
+  () => props.isSubscribed,
+  (newVal) => {
+    if (newVal) {
+      subscribeComments()
+    } else {
+      unsubscribeComments()
+    }
+  }
+)
 
 onMounted(() => {
   getComments()
@@ -79,14 +103,16 @@ onMounted(() => {
         v-for="comment in sortedCommentsTree"
         :key="comment.id"
         :comment="comment"
+        :depth="1"
         @reply="reply"
       />
     </ul>
   </div>
 </template>
 
-<style scoped>
+<style>
 ul {
   padding-left: 0;
+  padding-inline-start: 0;
 }
 </style>

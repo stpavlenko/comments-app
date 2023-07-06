@@ -10,6 +10,7 @@ const props = defineProps({
 </template>
 <style lang="scss" scoped>
 button {
+  font-size: inherit;
   padding: 0.5em 1em;
   background: #fff;
   color: black;
@@ -23,6 +24,7 @@ button {
   }
   &:disabled {
     background: rgba(255, 255, 255, 0.5);
+    cursor: not-allowed;
   }
 }
 </style>
