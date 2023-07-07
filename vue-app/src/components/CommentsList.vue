@@ -99,13 +99,15 @@ onMounted(() => {
   <div>
     <p>Total comments: {{ sortedCommentsTree.length }}</p>
     <ul>
-      <comment-item
-        v-for="comment in sortedCommentsTree"
-        :key="comment.id"
-        :comment="comment"
-        :depth="1"
-        @reply="reply"
-      />
+      <transition-group name="list">
+        <comment-item
+          v-for="comment in sortedCommentsTree"
+          :key="comment.id"
+          :comment="comment"
+          :depth="1"
+          @reply="reply"
+        />
+      </transition-group>
     </ul>
   </div>
 </template>
@@ -114,5 +116,14 @@ onMounted(() => {
 ul {
   padding-left: 0;
   padding-inline-start: 0;
+}
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.2s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(2rem);
 }
 </style>

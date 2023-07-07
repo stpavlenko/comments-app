@@ -104,7 +104,6 @@ function reply(commentId) {
     background: green;
   }
 }
-
 // .comment__content {
 //   background: rgb(47, 47, 47);
 //   margin-top: 1rem;

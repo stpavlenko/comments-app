@@ -31,7 +31,9 @@ watch(isFormVisible, (newValue) => {
   <div>
     <header class="header">
       <h1>
-        <a class="header__link" href="https://github.com/stpavlenko">Comments</a>
+        <a class="header__link" href="http://vue-app-stpavlenko.std-2121.ist.mospolytech.ru">
+          Comments
+        </a>
       </h1>
       <div class="header__actions">
         <label class="header__label">
@@ -57,7 +59,7 @@ watch(isFormVisible, (newValue) => {
 
 <style lang="scss">
 html {
-  font-size: 14px;
+  font-size: 11px;
 }
 .header {
   display: flex;
@@ -146,6 +148,16 @@ select {
     input:focus-visible + & {
       outline: -webkit-focus-ring-color auto 1px;
     }
+  }
+}
+@media (min-width: 480px) {
+  html {
+    font-size: 12px;
+  }
+}
+@media (min-width: 640px) {
+  html {
+    font-size: 14px;
   }
 }
 </style>
