@@ -38,8 +38,8 @@ function reply(commentId) {
     <article
       class="comment__content"
       :class="{
-        'comment--positive': rating < 0,
-        'comment--negative': rating > 0
+        'comment__content--positive': rating < 0,
+        'comment__content--negative': rating > 0
       }"
     >
       <p class="comment__author">{{ comment.author }}</p>
@@ -84,6 +84,12 @@ function reply(commentId) {
     margin-top: 1rem;
     padding: 1rem 1.3rem;
     border-radius: 0.5rem;
+    &--negative {
+      background: crimson;
+    }
+    &--positive {
+      background: green;
+    }
   }
   &__row {
     display: flex;
@@ -97,17 +103,5 @@ function reply(commentId) {
   &__list--pl {
     padding-left: 6%;
   }
-  &--negative {
-    background: crimson;
-  }
-  &--positive {
-    background: green;
-  }
 }
-// .comment__content {
-//   background: rgb(47, 47, 47);
-//   margin-top: 1rem;
-//   padding: 1rem 1.3rem;
-//   border-radius: 0.5rem;
-// }
 </style>

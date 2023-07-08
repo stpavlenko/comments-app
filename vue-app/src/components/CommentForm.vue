@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import MyAlert from '@/components/MyAlert.vue'
 
 const name = ref('')
@@ -11,6 +11,7 @@ const alertMessage = ref('')
 const alertDuration = ref(3000)
 const isNameEmpty = ref(false)
 const isCommentEmpty = ref(false)
+const nameInput = ref(null)
 
 const props = defineProps({
   parentId: {
@@ -80,12 +81,23 @@ async function send() {
     isBtnDisabled.value = false
   }
 }
+
+watch(
+  () => props.show,
+  (newVal) => {
+    if (newVal && nameInput.value) {
+      setTimeout(() => {
+        nameInput.value.focus()
+      })
+    }
+  }
+)
 </script>
 
 <template>
   <div>
     <transition>
-      <div class="form" @click="hideDialog" v-if="show">
+      <div class="form" @click="hideDialog" v-show="show">
         <div class="form__content" @click.stop>
           <div class="form__tab">
             <h2 class="form__title">Add comment</h2>
@@ -114,6 +126,7 @@ async function send() {
                 class="form__input"
                 required
                 @blur="checkNameEmpty"
+                ref="nameInput"
               />
             </label>
             <label class="form__label">

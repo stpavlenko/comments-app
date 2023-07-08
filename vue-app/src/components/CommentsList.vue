@@ -74,8 +74,8 @@ async function getComments() {
     if (props.isSubscribed) {
       subscribeComments()
     }
-  } catch (err) {
-    console.log('Error')
+  } catch (e) {
+    console.error(e)
   }
 }
 
@@ -98,7 +98,7 @@ onMounted(() => {
 <template>
   <div>
     <p>Total comments: {{ sortedCommentsTree.length }}</p>
-    <ul>
+    <ul class="comments">
       <transition-group name="list">
         <comment-item
           v-for="comment in sortedCommentsTree"
@@ -113,7 +113,7 @@ onMounted(() => {
 </template>
 
 <style>
-ul {
+.comments {
   padding-left: 0;
   padding-inline-start: 0;
 }

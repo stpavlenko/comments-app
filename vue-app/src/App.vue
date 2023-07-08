@@ -5,7 +5,7 @@ import CommentsList from './components/CommentsList.vue'
 
 const parentId = ref('')
 const isFormVisible = ref(false)
-const selectedOption = ref('new')
+const selectedOption = ref('old')
 const isSubscribed = ref(true)
 
 function reply(commentId) {
